@@ -1,17 +1,14 @@
 var http = require('http');
 var url = require('url');
+var querystring = require('querystring');
 
 var server = http.createServer(function (req, res) {
-	page = url.parse(req.url).pathname;
-	console.log(page);
+	var params = querystring.parse(url.parse(req.url).query);
 	res.writeHead(200, {"Content-Type": "text/html"});
-	if(page == '/')
+	if('firstname' in params && 'lastname' in params)
 	{
-		res.write('You are at our Welcome desk. How can I help you??');
-	}
-	else if(page == '/gators')
-	{
-		res.write('Hi Gator! Proud to be Florida Gator! Go Gators!! #ItsGreatUF');
+		res.write('You are at our Welcome desk,' + params['firstname'] + ' ' + params['lastname'] + ' . How can I help you??');
+		res.write('Proud to be Florida Gator! Go Gators!! #ItsGreatUF');
 	}
 	res.end();
 });
